@@ -188,6 +188,7 @@ class EmployeesDetail(generics.RetrieveAPIView, generics.UpdateAPIView , generic
     using viewset we need to use Routers , we can't just explicitly use the urlpatterns 
 
     """
+"""
 
 class EmployeeViewSet(viewsets.ViewSet):
 
@@ -230,3 +231,16 @@ class EmployeeViewSet(viewsets.ViewSet):
         employee = get_object_or_404(Employee, pk=pk)
         employee.delete()
         return Response(status=status.HTTP_404_NOT_FOUND)
+"""
+
+# using modelviewset
+
+
+class EmployeeViewSet(viewsets.ModelViewSet):
+    """
+        ModelViewSet -  provides all operations ( list, detail, create, update, delete ) - non-pk based or pk based , just writing down these couple of lines.. 
+
+        also it provides form like input form as well 
+    """
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
