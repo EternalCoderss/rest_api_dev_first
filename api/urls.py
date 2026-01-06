@@ -1,16 +1,29 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
+
+from rest_framework.routers import DefaultRouter
+
+
+router = DefaultRouter()
+router.register('employees', views.EmployeeViewSet, basename='employee')
+"""
+if using EmployeeViewSet we need to add basename as well
+"""
 
 
 urlpatterns = [
+     # normal url --
 
     path('students/', views.studentView),
     path('students/<int:pk>/', views.studentDetailView),
 
-    # employee urls 
+    # employee urls ---
 
-    path('employees/', views.Employees.as_view()),
-    path('employees/<pk>/', views.EmployeesDetail.as_view()),
+    # path('employees/', views.Employees.as_view()),
+    # path('employees/<pk>/', views.EmployeesDetail.as_view()),
 
+    #router based ---
+
+     path('', include(router.urls)),
 
 ]

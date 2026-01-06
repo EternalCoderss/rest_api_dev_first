@@ -1,4 +1,4 @@
-# from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 # from django.http import JsonResponse
 # Create your views here.
 from students.models import Student
@@ -9,7 +9,7 @@ from .serializers import StudentSerializer , EmployeeSerializer
 from  rest_framework.response import Response
 from rest_framework import status
 
-#if i want to only the data show in get requewst then we will use decorator -  like apiview
+#if i want to only the data show in get request then we will use decorator -  like APIView
 
 from rest_framework.decorators import api_view
 
@@ -19,7 +19,7 @@ from rest_framework.views import APIView
 from django.http import Http404
 # class end
 #class - mixin -- 
-from rest_framework import mixins, generics
+from rest_framework import mixins, generics , viewsets
 
 @api_view(['GET', 'POST'])
 def studentView(request):
@@ -159,8 +159,9 @@ class Employees(generics.ListAPIView, generics.CreateAPIView):
     serializer_class = EmployeeSerializer
 
 
-class EmployeesDetail(generics.RetrieveAPIView, generics.UpdateAPIView ,): 
+class EmployeesDetail(generics.RetrieveAPIView, generics.UpdateAPIView , generics.DestroyAPIView): 
     """
+     DestroyAPIView
      RetrieveUpdateAPIView ,
      RetrieveUpdateDestroyAPIView , 
      RetrieveDestroyAPIView -
@@ -174,4 +175,36 @@ class EmployeesDetail(generics.RetrieveAPIView, generics.UpdateAPIView ,):
     serializer_class = EmployeeSerializer
     lookup_field = 'pk'
 
+    """
+    ViewSets - ( Set of views - it combines the functionalities of both views and serializers, 
+    we dont have to need write seprate classes for listview or detailview etc)
+
+    two method - 
+    
+    viewsets.ViewSet -- list, create, retrive , update , delete 
+
+    viewsets.ModelViewSet  -- it just takes queryset and serializer_class and automatically provides both pk based or non-pk based operations.
+
+    using viewset we need to use Routers , we can't just explicitly use the urlpatterns 
+
+    """
+
+class EmployeeViewSet(viewsets.ViewSet):
+
+    def list(self, request):
+        queryset = Employee.objects.all()
+        serializer = EmployeeSerializer(queryset, many = True)
+        return Response(serializer.data)
+    
+    def create( self, request):
+        serializer = EmployeeSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def retrieve(self, request, pk=None):
+        employee = get_object_or_404(Employee, pk=pk)
+        serializer = EmployeeSerializer(employee)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
