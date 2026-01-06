@@ -1,0 +1,35 @@
+
+# --- Python & Django Garbage 
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+.python-version
+
+# --- Virtual Environment
+env/
+venv/
+.venv/
+my_env/
+
+# --- Security
+.env
+secret.key
+config.json
+*.pem
+
+# --- Database (Local DB )
+db.sqlite3
+*.sqlite3
+
+# --- IDE Settings
+.qodo/
+.idea/
+.vscode/
+
+# --- Mac OS Junk ---
+.DS_Store
+
+media/
+staticfiles/
