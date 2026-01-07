@@ -26,6 +26,6 @@ urlpatterns = [
     #router based ---
 
      path('', include(router.urls)),
-     path('departments/', include(router.urls)),
+     path('', include(router.urls)),
 
 ]
