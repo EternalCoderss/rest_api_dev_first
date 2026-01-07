@@ -6,6 +6,7 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register('employees', views.EmployeeViewSet, basename='employee')
+router.register('departments', views.DepartmentViewSet, basename='department')
 """
 if using EmployeeViewSet we need to add basename as well
 """
@@ -25,5 +26,6 @@ urlpatterns = [
     #router based ---
 
      path('', include(router.urls)),
+     path('departments/', include(router.urls)),
 
 ]

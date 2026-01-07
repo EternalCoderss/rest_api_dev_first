@@ -2,10 +2,10 @@ from django.shortcuts import render, get_object_or_404
 # from django.http import JsonResponse
 # Create your views here.
 from students.models import Student
-from employees.models import Employee
+from employees.models import Employee , Department
 
 
-from .serializers import StudentSerializer , EmployeeSerializer
+from .serializers import StudentSerializer , EmployeeSerializer, DepartmentSerializer
 from  rest_framework.response import Response
 from rest_framework import status
 
@@ -67,9 +67,6 @@ def studentDetailView(request, pk):
         student.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
-
-
-
 
     # Class Based Views ---
 
@@ -235,12 +232,22 @@ class EmployeeViewSet(viewsets.ViewSet):
 
 # using modelviewset
 
-
 class EmployeeViewSet(viewsets.ModelViewSet):
     """
         ModelViewSet -  provides all operations ( list, detail, create, update, delete ) - non-pk based or pk based , just writing down these couple of lines.. 
-
         also it provides form like input form as well 
     """
     queryset = Employee.objects.all()
+    
     serializer_class = EmployeeSerializer
+
+
+
+class DepartmentViewSet(viewsets.ModelViewSet):
+    """
+    department viewset -
+    """
+
+    queryset = Department.objects.all()
+
+    serializer_class = DepartmentSerializer
